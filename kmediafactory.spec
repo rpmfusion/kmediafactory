@@ -1,6 +1,6 @@
 Name:           kmediafactory
 Version:        0.6.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
@@ -137,6 +137,9 @@ fi
 
 
 %changelog
+* Tue Jul 22 2008 Sebastian Vahl <fedora@deadbabylon.de> - 0.6.0-5
+- import into rpmfusion
+
 * Thu Apr 03 2008 Rex Dieter <rdieter@fedoraproject.org> - 0.6.0-4
 - -libs subpkg (multilib friendly)
 - restore upstream (kde4) desktop-file vendor
