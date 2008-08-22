@@ -1,16 +1,16 @@
 Name:           kmediafactory
-Version:        0.6.0
-Release:        5%{?dist}
+Version:        0.7.0
+Release:        0.1.rc2%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
 License:        GPLv2+
 URL:            http://susku.pyhaselka.fi/damu/software/kmediafactory/
-Source0:        http://aryhma.oy.cx/damu/software/kmediafactory/kmediafactory-%{version}.tar.bz2
+Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}_rc2.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  kde-filesystem >= 4
-BuildRequires:  kdelibs4-devel >= 4
+BuildRequires:  kdelibs4-devel
 BuildRequires:  cmake
 BuildRequires:  dvdauthor
 BuildRequires:  desktop-file-utils
@@ -19,6 +19,10 @@ BuildRequires:  giflib-devel
 BuildRequires:  libdvdread-devel 
 BuildRequires:  mjpegtools 
 BuildRequires:  pcre-devel
+BuildRequires:  zip 
+# qt4-devel is pulled in by kdelibs4-devel already,
+# but we need a versioned BR
+BuildRequires:  qt4-devel >= 4.4
 
 Requires: %{name}-libs = %{version}-%{release}
 %{?_kde4_macros_api:Requires: kde4-macros(api) = %{_kde4_macros_api} }
@@ -47,7 +51,7 @@ Development files for %{name}.
 
 
 %prep
-%setup -q
+%setup -qn kmediafactory-0.7.0_rc2
 
 %build
 mkdir -p %{_target_platform}
@@ -60,7 +64,6 @@ make %{?_smp_mflags} -C %{_target_platform}
 
 %install
 rm -rf %{buildroot}
-mkdir %{buildroot}
 make install DESTDIR=%{buildroot} -C %{_target_platform}
 
 # validate desktop file
@@ -76,6 +79,7 @@ desktop-file-install --vendor=""                          \
 %find_lang kmediafactory_template
 %find_lang kmediafactory_video
 %find_lang libkmf
+%find_lang kmediafactory_kstore
 cat *.lang > %{name}-all.lang
 
 %clean
@@ -110,10 +114,7 @@ fi
 %{_kde4_docdir}/HTML/en/kmediafactory/
 %{_kde4_bindir}/kmediafactory
 %{_kde4_appsdir}/kmediafactory/
-%{_kde4_appsdir}/kmediafactory_output/
-%{_kde4_appsdir}/kmediafactory_slideshow/
 %{_kde4_appsdir}/kmediafactory_template/
-%{_kde4_appsdir}/kmediafactory_video/
 %{_kde4_appsdir}/kmfwidgets/
 %{_kde4_datadir}/config.kcfg/*
 %{_kde4_datadir}/config/*
@@ -137,6 +138,9 @@ fi
 
 
 %changelog
+* Thu Aug 21 2008 Sebastian Vahl <fedora@deadbabylon.de> - 0.7.0-0.1.rc2
+- new upstream version: 0.7.0-rc2
+
 * Tue Jul 22 2008 Sebastian Vahl <fedora@deadbabylon.de> - 0.6.0-5
 - import into rpmfusion
 
