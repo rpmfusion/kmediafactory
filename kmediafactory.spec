@@ -1,11 +1,11 @@
 Name:           kmediafactory
 Version:        0.7.0
-Release:        0.1.rc2%{?dist}
+Release:        0.2.rc2%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
 License:        GPLv2+
-URL:            http://susku.pyhaselka.fi/damu/software/kmediafactory/
+URL:            http://aryhma.oy.cx/damu/software/kmediafactory/
 Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}_rc2.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -138,6 +138,9 @@ fi
 
 
 %changelog
+* Thu Sep 04 2008 Sebastian Vahl <fedora@deadbabylon.de> - 0.7.0-0.2.rc2
+- fix url
+
 * Thu Aug 21 2008 Sebastian Vahl <fedora@deadbabylon.de> - 0.7.0-0.1.rc2
 - new upstream version: 0.7.0-rc2
 
