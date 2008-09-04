@@ -5,8 +5,8 @@ Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
 License:        GPLv2+
-URL:            http://susku.pyhaselka.fi/damu/software/kmediafactory/
-Source0:        http://aryhma.oy.cx/damu/software/kmediafactory/kmediafactory-%{version}.tar.bz2
+URL:            http://aryhma.oy.cx/damu/software/kmediafactory/
+Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  kde-filesystem >= 4
@@ -139,6 +139,7 @@ fi
 %changelog
 * Tue Jul 22 2008 Sebastian Vahl <fedora@deadbabylon.de> - 0.6.0-5
 - import into rpmfusion
+- fix url and source0 
 
 * Thu Apr 03 2008 Rex Dieter <rdieter@fedoraproject.org> - 0.6.0-4
 - -libs subpkg (multilib friendly)
