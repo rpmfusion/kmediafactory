@@ -1,6 +1,6 @@
 Name:           kmediafactory
 Version:        0.7.0
-Release:        0.2.rc2%{?dist}
+Release:        0.3.rc2%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
@@ -138,6 +138,9 @@ fi
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.7.0-0.3.rc2
+- rebuild for new F11 features
+
 * Thu Sep 04 2008 Sebastian Vahl <fedora@deadbabylon.de> - 0.7.0-0.2.rc2
 - fix url
 
