@@ -1,12 +1,12 @@
 Name:           kmediafactory
-Version:        0.7.0
-Release:        0.3.rc2%{?dist}
+Version:        0.7.1
+Release:        1%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
 License:        GPLv2+
 URL:            http://aryhma.oy.cx/damu/software/kmediafactory/
-Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}_rc2.tar.bz2
+Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  kde-filesystem >= 4
@@ -51,7 +51,7 @@ Development files for %{name}.
 
 
 %prep
-%setup -qn kmediafactory-0.7.0_rc2
+%setup -q
 
 %build
 mkdir -p %{_target_platform}
@@ -138,6 +138,9 @@ fi
 
 
 %changelog
+* Wed Apr 08 2009 Sebastian Vahl <fedora@deadbabylon.de> - 0.7.1-1
+- new upstream version: 0.7.1
+
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.7.0-0.3.rc2
 - rebuild for new F11 features
 
