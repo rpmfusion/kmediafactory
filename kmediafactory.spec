@@ -1,6 +1,6 @@
 Name:           kmediafactory
 Version:        0.7.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
@@ -70,6 +70,7 @@ make install DESTDIR=%{buildroot} -C %{_target_platform}
 desktop-file-install --vendor=""                          \
         --dir %{buildroot}%{_kde4_datadir}/applications/kde4   \
         --remove-category="Application"                   \
+        --add-category="X-OutputGeneration"               \
         %{buildroot}%{_kde4_datadir}/applications/kde4/%{name}.desktop
 
 # locale
@@ -138,6 +139,9 @@ fi
 
 
 %changelog
+* Fri Oct 23 2009 Orcan Ogetbil <oged[DOT]fedora[AT]gmail[DOT]com> - 0.7.1-2
+- Update desktop file according to F-12 FedoraStudio feature
+
 * Wed Apr 08 2009 Sebastian Vahl <fedora@deadbabylon.de> - 0.7.1-1
 - new upstream version: 0.7.1
 
