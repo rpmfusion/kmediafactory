@@ -1,6 +1,6 @@
 Name:           kmediafactory
-Version:        0.7.1
-Release:        2%{?dist}
+Version:        0.8.0
+Release:        1%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
@@ -9,26 +9,37 @@ URL:            http://code.google.com/p/kmediafactory/
 Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  kde-filesystem >= 4
+# rpmfusion's mlt binary is named mlt-melt:
+Patch1: kmediafactory-0.8.0-mlt-melt.patch
+
+## upstreamable patches
+Patch50: kmediafactory-0.8.0-docbook_fix.patch
+Patch51: kmediafactory-0.8.0-dso.patch
+
 BuildRequires:  kdelibs4-devel
-BuildRequires:  cmake
 BuildRequires:  dvdauthor
+BuildRequires:  dvd-slideshow
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
 BuildRequires:  giflib-devel
 BuildRequires:  libdvdread-devel 
+BuildRequires:  mlt
 BuildRequires:  mjpegtools 
 BuildRequires:  pcre-devel
 BuildRequires:  zip 
-# qt4-devel is pulled in by kdelibs4-devel already,
-# but we need a versioned BR
-BuildRequires:  qt4-devel >= 4.4
 
-Requires: %{name}-libs = %{version}-%{release}
+Requires: %{name}-libs%{?_isa} = %{version}-%{release}
+Requires: kdebase-runtime%{?_kde4_version: >= %{_kde4_version}}
 %{?_kde4_macros_api:Requires: kde4-macros(api) = %{_kde4_macros_api} }
-Requires:       oxygen-icon-theme
+
 # needed for normal functionality
-Requires: dvdauthor mjpegtools mplayer ffmpeg
+Requires: dvdauthor
+Requires: dvd-slideshow
+Requires: ffmpeg
+Requires: mjpegtools
+Requires: mplayer
+# optional bits
+#Requires(hint): mlt
 
 %description
 Kmediafactory is an easy to use template based dvd authoring tool. 
@@ -45,13 +56,18 @@ Requires: %{name} = %{version}-%{release}
 %package devel
 Summary: Development files for kmediafactory
 Group: Development/Libraries
-Requires: %{name}-libs = %{version}-%{release}
+Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 %description devel
 Development files for %{name}.
 
 
 %prep
 %setup -q
+
+%patch1 -p1 -b .mlt-melt
+%patch50 -p1
+%patch51 -p1 -b .dso
+
 
 %build
 mkdir -p %{_target_platform}
@@ -64,55 +80,54 @@ make %{?_smp_mflags} -C %{_target_platform}
 
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot} -C %{_target_platform}
+make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 # validate desktop file
 desktop-file-install --vendor=""                          \
         --dir %{buildroot}%{_kde4_datadir}/applications/kde4   \
         --remove-category="Application"                   \
         --add-category="X-OutputGeneration"               \
-        %{buildroot}%{_kde4_datadir}/applications/kde4/%{name}.desktop
+        %{buildroot}%{_kde4_datadir}/applications/kde4/kmediafactory.desktop
 
 # locale
-%find_lang %{name}
+%find_lang kmediafactory --with-kde
+%find_lang kmediafactory_kstore
 %find_lang kmediafactory_output
 %find_lang kmediafactory_slideshow
 %find_lang kmediafactory_template
 %find_lang kmediafactory_video
 %find_lang libkmf
-%find_lang kmediafactory_kstore
-cat *.lang > %{name}-all.lang
+cat kmediafactory*.lang > kmediafactory-all.lang
+
 
 %clean
 rm -rf %{buildroot}
 
+
 %post
-/sbin/ldconfig ||:
-update-desktop-database &> /dev/null ||:
-update-mime-database %{_datadir}/mime &> /dev/null || :
-touch --no-create %{_datadir}/icons/oxygen || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/oxygen || :
-fi
+touch --no-create %{_kde4_iconsdir}/hicolor || :
 
 %postun
-/sbin/ldconfig ||:
+if [ $1 -eq 0 ]; then
 update-desktop-database &> /dev/null ||:
 update-mime-database %{_datadir}/mime &> /dev/null || :
-touch --no-create %{_datadir}/icons/oyxgen || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/oxygen || :
+touch --no-create %{_kde4_iconsdir}/hicolor || :
+gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 fi
+
+%posttrans
+update-desktop-database &> /dev/null ||:
+update-mime-database %{_datadir}/mime &> /dev/null || :
+gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
 
 
-%files -f %{name}-all.lang
+%files -f kmediafactory-all.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING CREDITS NEWS README TODO
-%{_kde4_docdir}/HTML/en/kmediafactory/
 %{_kde4_bindir}/kmediafactory
 %{_kde4_appsdir}/kmediafactory/
 %{_kde4_appsdir}/kmediafactory_template/
@@ -121,16 +136,17 @@ fi
 %{_kde4_datadir}/config/*
 %{_kde4_datadir}/kde4/services/*
 %{_kde4_datadir}/kde4/servicetypes/*
-# consider moving to hicolor -- Rex
-%{_kde4_iconsdir}/oxygen/*/*/*
+%{_kde4_iconsdir}/hicolor/*/*/*
 %{_kde4_libdir}/kde4/kmediafactory_*
 %{_kde4_libdir}/kde4/plugins/designer/kmfwidgets.so
 %{_kde4_datadir}/applications/kde4/kmediafactory.desktop
 %{_datadir}/mime/packages/kmediafactory.xml
 
-%files libs
+%files libs -f libkmf.lang
 %defattr(-,root,root,-)
-%{_kde4_libdir}/lib*.so.*
+%{_kde4_libdir}/libkmediafactoryinterfaces.so.0*
+%{_kde4_libdir}/libkmediafactorykstore.so.0*
+%{_kde4_libdir}/libkmf.so.0*
 
 %files devel
 %defattr(-,root,root,-)
@@ -139,6 +155,10 @@ fi
 
 
 %changelog
+* Mon Jun 14 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.8.0-1
+- kmediafactory-0.8.0
+- optimize scriptlets
+
 * Fri Oct 23 2009 Orcan Ogetbil <oged[DOT]fedora[AT]gmail[DOT]com> - 0.7.1-2
 - Update desktop file according to F-12 FedoraStudio feature
 

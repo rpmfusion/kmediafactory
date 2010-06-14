@@ -1,0 +1,26 @@
+diff -up kmediafactory-0.8.0/CMakeLists.txt.mlt-melt kmediafactory-0.8.0/CMakeLists.txt
+--- kmediafactory-0.8.0/CMakeLists.txt.mlt-melt	2010-04-08 09:00:02.000000000 -0500
++++ kmediafactory-0.8.0/CMakeLists.txt	2010-06-14 14:53:56.861790743 -0500
+@@ -64,8 +64,8 @@ macro_bool_to_01(LIBDVDREAD_FOUND HAVE_L
+ find_program(DVDSLIDESHOW_EXECUTABLE dvd-slideshow)
+ macro_log_feature(DVDSLIDESHOW_EXECUTABLE "dvd-slideshow" "For making slideshows" "http://dvd-slideshow.sourceforge.net/wiki/Main_Page" FALSE "" "")
+ 
+-find_program(MELT_EXECUTABLE melt)
+-macro_log_feature(MELT_EXECUTABLE "melt" "For making slideshows" "http://www.mltframework.org/" FALSE "" "")
++find_program(MELT_EXECUTABLE mlt-melt)
++macro_log_feature(MELT_EXECUTABLE "mlt-melt" "For making slideshows" "http://www.mltframework.org/" FALSE "" "")
+ 
+ find_program(K3B_EXECUTABLE k3b)
+ macro_log_feature(K3B_EXECUTABLE "k3b" "For burning DVDs" "http://www.k3b.org/" FALSE "" "")
+diff -up kmediafactory-0.8.0/plugins/slideshow/slideshowplugin.cpp.mlt-melt kmediafactory-0.8.0/plugins/slideshow/slideshowplugin.cpp
+--- kmediafactory-0.8.0/plugins/slideshow/slideshowplugin.cpp.mlt-melt	2010-04-08 09:00:01.000000000 -0500
++++ kmediafactory-0.8.0/plugins/slideshow/slideshowplugin.cpp	2010-06-14 14:54:54.970790884 -0500
+@@ -83,7 +83,7 @@ void SlideshowPlugin::init(const QString
+     }
+ 
+     if (type.left(3) == "DVD") {
+-        m_app = KStandardDirs::findExe("melt");
++        m_app = KStandardDirs::findExe("mlt-melt");
+ 
+         if (m_app.isEmpty()) {
+             m_app = KStandardDirs::findExe("dvd-slideshow");
