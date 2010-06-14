@@ -5,7 +5,7 @@ Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
 License:        GPLv2+
-URL:            http://aryhma.oy.cx/damu/software/kmediafactory/
+URL:            http://code.google.com/p/kmediafactory/ 
 Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
