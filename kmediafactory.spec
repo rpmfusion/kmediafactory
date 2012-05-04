@@ -1,5 +1,5 @@
 Name:           kmediafactory
-Version:        0.8.0
+Version:        0.8.1
 Release:        1%{?dist}
 Summary:        A template based DVD authoring tool
 
@@ -13,7 +13,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch1: kmediafactory-0.8.0-mlt-melt.patch
 
 ## upstreamable patches
-Patch50: kmediafactory-0.8.0-docbook_fix.patch
+Patch50: kmediafactory-0.8.1-gcc47.patch
 Patch51: kmediafactory-0.8.0-dso.patch
 
 BuildRequires:  kdelibs4-devel
@@ -65,7 +65,7 @@ Development files for %{name}.
 %setup -q
 
 %patch1 -p1 -b .mlt-melt
-%patch50 -p1
+%patch50 -p1 -b .gcc47
 %patch51 -p1 -b .dso
 
 
@@ -120,11 +120,6 @@ update-desktop-database &> /dev/null ||:
 update-mime-database %{_datadir}/mime &> /dev/null || :
 gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 
-%post libs -p /sbin/ldconfig
-
-%postun libs -p /sbin/ldconfig
-
-
 %files -f kmediafactory-all.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING CREDITS NEWS README TODO
@@ -142,6 +137,9 @@ gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 %{_kde4_datadir}/applications/kde4/kmediafactory.desktop
 %{_datadir}/mime/packages/kmediafactory.xml
 
+%post libs -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
+
 %files libs -f libkmf.lang
 %defattr(-,root,root,-)
 %{_kde4_libdir}/libkmediafactoryinterfaces.so.0*
@@ -155,6 +153,15 @@ gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 
 
 %changelog
+* Fri May 04 2012 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-1
+- 0.8.1
+
+* Fri Mar 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.8.0-3
+- Rebuilt for c++ ABI breakage
+
+* Wed Feb 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.8.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Mon Jun 14 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.8.0-1
 - kmediafactory-0.8.0
 - optimize scriptlets
