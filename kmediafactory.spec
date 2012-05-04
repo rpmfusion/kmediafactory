@@ -13,7 +13,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch1: kmediafactory-0.8.0-mlt-melt.patch
 
 ## upstreamable patches
+# http://code.google.com/p/kmediafactory/issues/detail?id=19
 Patch50: kmediafactory-0.8.1-gcc47.patch
+# http://code.google.com/p/kmediafactory/issues/detail?id=18
 Patch51: kmediafactory-0.8.0-dso.patch
 
 BuildRequires:  kdelibs4-devel
