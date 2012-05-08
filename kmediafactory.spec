@@ -87,7 +87,7 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 # validate desktop file
 desktop-file-install --vendor=""                          \
-        --dir %{buildroot}%{_kde4_datadir}/applications/kde4   \
+        --dir=%{buildroot}%{_kde4_datadir}/applications/kde4   \
         --remove-category="Application"                   \
         --add-category="X-OutputGeneration"               \
         %{buildroot}%{_kde4_datadir}/applications/kde4/kmediafactory.desktop
@@ -95,6 +95,7 @@ desktop-file-install --vendor=""                          \
 # locale
 %find_lang kmediafactory --with-kde
 %find_lang kmediafactory_kstore
+%find_lang kmediafactory_interface
 %find_lang kmediafactory_output
 %find_lang kmediafactory_slideshow
 %find_lang kmediafactory_template
