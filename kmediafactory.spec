@@ -22,6 +22,7 @@ BuildRequires:  kdelibs4-devel
 BuildRequires:  dvdauthor
 BuildRequires:  dvd-slideshow
 BuildRequires:  desktop-file-utils
+BuildRequires:  ffmpeg-devel
 BuildRequires:  gettext
 BuildRequires:  giflib-devel
 BuildRequires:  libdvdread-devel 
