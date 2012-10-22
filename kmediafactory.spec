@@ -1,6 +1,6 @@
 Name:           kmediafactory
 Version:        0.8.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
@@ -17,6 +17,8 @@ Patch1: kmediafactory-0.8.0-mlt-melt.patch
 Patch50: kmediafactory-0.8.1-gcc47.patch
 # http://code.google.com/p/kmediafactory/issues/detail?id=18
 Patch51: kmediafactory-0.8.0-dso.patch
+# fix for newer ffmpeg
+Patch52: kmediafactory-0.8.1-ffmpeg.patch
 
 BuildRequires:  kdelibs4-devel
 BuildRequires:  dvdauthor
@@ -29,6 +31,7 @@ BuildRequires:  libdvdread-devel
 BuildRequires:  mlt
 BuildRequires:  mjpegtools 
 BuildRequires:  pcre-devel
+BuildRequires:  pkgconfig(libkexiv2)
 BuildRequires:  zip 
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
@@ -70,6 +73,7 @@ Development files for %{name}.
 %patch1 -p1 -b .mlt-melt
 %patch50 -p1 -b .gcc47
 %patch51 -p1 -b .dso
+%patch52 -p1 -b .ffmpeg
 
 
 %build
@@ -157,6 +161,10 @@ gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 
 
 %changelog
+* Mon Oct 22 2012 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-2
+- fix for newer ffmpeg
+- BR: libkexiv2-devel
+
 * Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.8.1-2
 - Rebuilt for FFmpeg
 
