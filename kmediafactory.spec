@@ -1,6 +1,6 @@
 Name:           kmediafactory
 Version:        0.8.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A template based DVD authoring tool
 
 Group:          User Interface/Desktops
@@ -161,6 +161,9 @@ gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 
 
 %changelog
+* Sat Nov 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.8.1-4
+- Rebuilt for FFmpeg 1.0
+
 * Mon Oct 22 2012 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-2
 - fix for newer ffmpeg
 - BR: libkexiv2-devel
