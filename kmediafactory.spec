@@ -1,13 +1,11 @@
 Name:           kmediafactory
-Version:        0.8.1
-Release:        4%{?dist}
 Summary:        A template based DVD authoring tool
+Version:        0.8.1
+Release:        5%{?dist}
 
-Group:          User Interface/Desktops
 License:        GPLv2+
 URL:            http://code.google.com/p/kmediafactory/ 
 Source0:        http://kmediafactory.googlecode.com/files/kmediafactory-%{version}.tar.bz2
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # rpmfusion's mlt binary is named mlt-melt:
 Patch1: kmediafactory-0.8.0-mlt-melt.patch
@@ -19,24 +17,28 @@ Patch50: kmediafactory-0.8.1-gcc47.patch
 Patch51: kmediafactory-0.8.0-dso.patch
 # fix for newer ffmpeg
 Patch52: kmediafactory-0.8.1-ffmpeg.patch
+# use kdelibs' FindFFMPEG.cmake instead of bundled FindFfmpeg.cmake here
+Patch53: kmediafactory-0.8.1-FindFFmpeg.patch
+# make kmediafactory.desktop pass desktop-file-validate
+Patch54: kmediafactory-0.8.1-desktop_validate.patch
 
-BuildRequires:  kdelibs4-devel
+BuildRequires:  desktop-file-utils
 BuildRequires:  dvdauthor
 BuildRequires:  dvd-slideshow
-BuildRequires:  desktop-file-utils
-BuildRequires:  ffmpeg-devel
 BuildRequires:  gettext
 BuildRequires:  giflib-devel
+BuildRequires:  kdelibs4-devel
 BuildRequires:  libdvdread-devel 
 BuildRequires:  mlt
 BuildRequires:  mjpegtools 
 BuildRequires:  pcre-devel
+## ffmpeg
+BuildRequires:  pkgconfig(libavcodec) pkgconfig(libavformat) pkgconfig(libavutil) pkgconfig(libswscale)
 BuildRequires:  pkgconfig(libkexiv2)
 BuildRequires:  zip 
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 Requires: kdebase-runtime%{?_kde4_version: >= %{_kde4_version}}
-%{?_kde4_macros_api:Requires: kde4-macros(api) = %{_kde4_macros_api} }
 
 # needed for normal functionality
 Requires: dvdauthor
@@ -54,17 +56,15 @@ recordings in three simple steps.
 
 %package libs
 Summary: Runtime libraries for %{name}
-Group:   System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 %description libs
 %{summary}.
 
 %package devel
-Summary: Development files for kmediafactory
-Group: Development/Libraries
+Summary: Development files for %{name}
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 %description devel
-Development files for %{name}.
+%{summary}.
 
 
 %prep
@@ -74,6 +74,8 @@ Development files for %{name}.
 %patch50 -p1 -b .gcc47
 %patch51 -p1 -b .dso
 %patch52 -p1 -b .ffmpeg
+%patch53 -p1 -b .FindFFmpeg
+%patch54 -p1 -b .desktop_validate
 
 
 %build
@@ -86,15 +88,7 @@ make %{?_smp_mflags} -C %{_target_platform}
 
 
 %install
-rm -rf %{buildroot}
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
-
-# validate desktop file
-desktop-file-install --vendor=""                          \
-        --dir=%{buildroot}%{_kde4_datadir}/applications/kde4   \
-        --remove-category="Application"                   \
-        --add-category="X-OutputGeneration"               \
-        %{buildroot}%{_kde4_datadir}/applications/kde4/kmediafactory.desktop
 
 # locale
 %find_lang kmediafactory --with-kde
@@ -108,8 +102,8 @@ desktop-file-install --vendor=""                          \
 cat kmediafactory*.lang > kmediafactory-all.lang
 
 
-%clean
-rm -rf %{buildroot}
+%check
+desktop-file-validate %{buildroot}%{_kde4_datadir}/applications/kde4/kmediafactory.desktop
 
 
 %post
@@ -117,19 +111,18 @@ touch --no-create %{_kde4_iconsdir}/hicolor || :
 
 %postun
 if [ $1 -eq 0 ]; then
-update-desktop-database &> /dev/null ||:
-update-mime-database %{_datadir}/mime &> /dev/null || :
 touch --no-create %{_kde4_iconsdir}/hicolor || :
 gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
+update-desktop-database &> /dev/null ||:
+update-mime-database %{_datadir}/mime &> /dev/null || :
 fi
 
 %posttrans
+gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 update-desktop-database &> /dev/null ||:
 update-mime-database %{_datadir}/mime &> /dev/null || :
-gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 
 %files -f kmediafactory-all.lang
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING CREDITS NEWS README TODO
 %{_kde4_bindir}/kmediafactory
 %{_kde4_appsdir}/kmediafactory/
@@ -149,18 +142,20 @@ gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 %postun libs -p /sbin/ldconfig
 
 %files libs -f libkmf.lang
-%defattr(-,root,root,-)
 %{_kde4_libdir}/libkmediafactoryinterfaces.so.0*
 %{_kde4_libdir}/libkmediafactorykstore.so.0*
 %{_kde4_libdir}/libkmf.so.0*
 
 %files devel
-%defattr(-,root,root,-)
 %{_kde4_includedir}/kmediafactory/
 %{_kde4_libdir}/lib*.so
 
 
 %changelog
+* Mon Nov 26 2012 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-5
+- .spec cleanup (remove deprecated stuff)
+- use kdelibs' FindFFmpeg.cmake (rpmfusion#2585)
+
 * Sat Nov 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.8.1-4
 - Rebuilt for FFmpeg 1.0
 

@@ -1,0 +1,9 @@
+diff -up kmediafactory-0.8.1/src/kmediafactory.desktop.desktop_validate kmediafactory-0.8.1/src/kmediafactory.desktop
+--- kmediafactory-0.8.1/src/kmediafactory.desktop.desktop_validate	2011-08-01 02:47:08.000000000 -0500
++++ kmediafactory-0.8.1/src/kmediafactory.desktop	2012-11-26 08:38:01.039007506 -0600
+@@ -11,4 +11,4 @@ GenericName[fi]=DVD:n kokoaminen
+ Terminal=false
+ MimeType=application/x-kmediafactory;
+ X-KDE-NativeMimeType=application/x-kmediafactory;
+-Categories=KDE;AudioVideo;AudioVideoEditing
++Categories=KDE;AudioVideo;AudioVideoEditing;
