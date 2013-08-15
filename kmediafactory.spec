@@ -1,7 +1,7 @@
 Name:           kmediafactory
 Summary:        A template based DVD authoring tool
 Version:        0.8.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 
 License:        GPLv2+
 URL:            http://code.google.com/p/kmediafactory/ 
@@ -152,6 +152,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
+* Thu Aug 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.8.1-9
+- Rebuilt for FFmpeg 2.0.x
+
 * Sun May 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.8.1-8
 - Rebuilt for x264/FFmpeg
 
