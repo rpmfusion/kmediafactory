@@ -22,3 +22,16 @@ diff -up kmediafactory-0.8.1/lib/videofile.cpp.ffmpeg kmediafactory-0.8.1/lib/vi
           av_find_stream_info(avFromatContext) < 0) {
          close();
      }
+@@ -143,8 +143,11 @@ bool VideoFile::initialize()
+     }
+ 
+     avVideoCodecContext->workaround_bugs = 1;
+-
++#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53,2,0)
++    return avcodec_open2(avVideoCodecContext, avVideoCodec, NULL)>=0;
++#else
+     return avcodec_open(avVideoCodecContext, avVideoCodec)>=0;
++#endif
+ }
+ 
+ int VideoFile::getWidth()
