@@ -1,7 +1,7 @@
 Name:           kmediafactory
 Summary:        A template based DVD authoring tool
 Version:        0.8.1
-Release:        13%{?dist}
+Release:        14%{?dist}
 
 License:        GPLv2+
 URL:            http://code.google.com/p/kmediafactory/ 
@@ -108,13 +108,15 @@ desktop-file-validate %{buildroot}%{_kde4_datadir}/applications/kde4/kmediafacto
 
 
 %post
-touch --no-create %{_kde4_iconsdir}/hicolor || :
+touch --no-create %{_kde4_iconsdir}/hicolor >& /dev/null || :
+touch --no-create %{_datadir}/mime/packages &> /dev/null || :
 
 %postun
 if [ $1 -eq 0 ]; then
 touch --no-create %{_kde4_iconsdir}/hicolor || :
 gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 update-desktop-database &> /dev/null ||:
+touch --no-create %{_datadir}/mime/packages &> /dev/null || :
 update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 fi
 
@@ -153,6 +155,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
+* Wed Aug 06 2014 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-14
+- fix mime scriptlets
+
 * Wed Aug 06 2014 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-13
 - BR: qtwebkit, update mime scriptlet
 
