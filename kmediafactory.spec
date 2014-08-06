@@ -1,7 +1,7 @@
 Name:           kmediafactory
 Summary:        A template based DVD authoring tool
 Version:        0.8.1
-Release:        12%{?dist}
+Release:        13%{?dist}
 
 License:        GPLv2+
 URL:            http://code.google.com/p/kmediafactory/ 
@@ -32,6 +32,7 @@ BuildRequires:  libdvdread-devel
 BuildRequires:  mlt
 BuildRequires:  mjpegtools 
 BuildRequires:  pcre-devel
+BuildRequires:  pkgconfig(QtWebKit)
 ## ffmpeg
 BuildRequires:  pkgconfig(libavcodec) pkgconfig(libavformat) pkgconfig(libavutil) pkgconfig(libswscale)
 BuildRequires:  pkgconfig(libkexiv2)
@@ -114,13 +115,13 @@ if [ $1 -eq 0 ]; then
 touch --no-create %{_kde4_iconsdir}/hicolor || :
 gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 update-desktop-database &> /dev/null ||:
-update-mime-database %{_datadir}/mime &> /dev/null || :
+update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 fi
 
 %posttrans
 gtk-update-icon-cache --quiet %{_kde4_iconsdir}/hicolor &> /dev/null || :
 update-desktop-database &> /dev/null ||:
-update-mime-database %{_datadir}/mime &> /dev/null || :
+update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 %files -f kmediafactory-all.lang
 %doc AUTHORS ChangeLog COPYING CREDITS NEWS README TODO
@@ -152,6 +153,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
+* Wed Aug 06 2014 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-13
+- BR: qtwebkit, update mime scriptlet
+
 * Sat Mar 29 2014 Sérgio Basto <sergio@serjux.com> - 0.8.1-12
 - Rebuilt for ffmpeg-2.2
 
