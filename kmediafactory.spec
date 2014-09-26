@@ -1,7 +1,7 @@
 Name:           kmediafactory
 Summary:        A template based DVD authoring tool
 Version:        0.8.1
-Release:        14%{?dist}
+Release:        15%{?dist}
 
 License:        GPLv2+
 URL:            http://code.google.com/p/kmediafactory/ 
@@ -155,6 +155,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
+* Fri Sep 26 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.8.1-15
+- Rebuilt for FFmpeg 2.4.x
+
 * Wed Aug 06 2014 Rex Dieter <rdieter@fedoraproject.org> 0.8.1-14
 - fix mime scriptlets
 
