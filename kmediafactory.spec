@@ -1,7 +1,7 @@
 Name:           kmediafactory
 Summary:        A template based DVD authoring tool
 Version:        0.8.1
-Release:        17%{?dist}
+Release:        18%{?dist}
 
 License:        GPLv2+
 URL:            http://code.google.com/p/kmediafactory/ 
@@ -21,6 +21,7 @@ Patch52: kmediafactory-0.8.1-ffmpeg.patch
 Patch53: kmediafactory-0.8.1-FindFFmpeg.patch
 # make kmediafactory.desktop pass desktop-file-validate
 Patch54: kmediafactory-0.8.1-desktop_validate.patch
+Patch55: kmediafactory-0.8.1-ffmpeg-2.4.3-compatibility.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  dvdauthor
@@ -77,6 +78,7 @@ Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 %patch52 -p1 -b .ffmpeg
 %patch53 -p1 -b .FindFFmpeg
 %patch54 -p1 -b .desktop_validate
+%patch55 -p1 -b .ffmpeg243
 
 
 %build
@@ -155,6 +157,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
+* Wed Oct 22 2014 David Timms <iinet.net.au @ dtimms> - 0.8.1-18
+- Add patch for compilation against ffmpeg 2.4.3.
+
 * Mon Oct 20 2014 Sérgio Basto <sergio@serjux.com> - 0.8.1-17
 - Rebuilt for FFmpeg 2.4.3
 
